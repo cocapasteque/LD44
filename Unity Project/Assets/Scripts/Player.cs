@@ -63,6 +63,8 @@ public class Player : MonoBehaviour
         _rescued.Remove(unit);
         _usedSpots.Remove(unit.RescueSpot);
         RescueSpots.Add(unit.RescueSpot);
+        // Get the gas back from the car.
+        Gas += unit.Gas / 4;
     }
     // Give some gas to a rescued unit
     public void GiveGas(RescueUnit unit, float amount)
