@@ -6,6 +6,7 @@ TagManager:
   tags:
   - deathZone
   - roadSpawn
+  - rescueUnit
   layers:
   - Default
   - TransparentFX

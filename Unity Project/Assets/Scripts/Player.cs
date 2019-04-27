@@ -18,10 +18,12 @@ public class Player : MonoBehaviour
         HandleGas();
     }
 
+    // Handling the gas tank of the player.
     private void HandleGas()
     {
         Gas = Mathf.Clamp01(Gas - ((GasDecreaseSpeed * Time.deltaTime) / 10));
     }
+    // Handling the keyboard input for the player.
     private void HandleMovement()
     {
         if (_canMove && Input.GetKeyDown(KeyCode.LeftArrow) && currentPosition != PlayerMovement.Left)
@@ -35,6 +37,12 @@ public class Player : MonoBehaviour
             StartCoroutine(ChangeLane(move, PlayerMovement.Right));
         }
     }
+    // Rescue unit and put it in the rescued pool behind player's car.
+    private void RescueUnit(RescueUnit unit)
+    {
+
+    }
+    // Smooth switch of lane.
     private IEnumerator ChangeLane(Vector3 to, PlayerMovement move)
     {
         _canMove = false;
@@ -50,6 +58,19 @@ public class Player : MonoBehaviour
         }
         transform.position = to;
         _canMove = true;
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        // If we are rescuing an unit
+        if (other.tag == "rescueUnit")
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RescueUnit(other.GetComponent<RescueUnit>());
+            }
+        }
     }
 }
 
