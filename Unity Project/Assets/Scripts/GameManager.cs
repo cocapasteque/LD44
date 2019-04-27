@@ -7,13 +7,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> roadPrefabs;
     [SerializeField] private float roadOffset;
-    [SerializeField] private int roadPoolSize;
-
+    [SerializeField] private List<GameObject> roads;
+    [SerializeField] private Transform RoadParent;
     public Vector3 LimitPosition;
     public Vector3 SpawnPosition;
     public float Speed;
-
-    private Pool<Road> _roads;
 
     private void Awake()
     {
@@ -21,26 +19,18 @@ public class GameManager : MonoBehaviour
         else if (Instance != this) Destroy(gameObject);
     }
 
-    private void Start()
+    public void SpawnRoad()
     {
-        _roads = new Pool<Road>(roadPoolSize, "roads");
-        InitRoadPool();
+        var road = roadPrefabs[Random.Range(0, roadPrefabs.Count)];
+        var roadObject = Instantiate(road, SpawnPosition, Quaternion.identity);
+        roadObject.transform.SetParent(RoadParent);
+
+        roads.Add(roadObject);
     }
 
-    private void InitRoadPool()
+    public void DestroyRoad(Road road)
     {
-        Road road;
-        while (!(road = _roads.Next()).IsInit)
-        {
-            var prefab = roadPrefabs[Random.Range(0, roadPrefabs.Count)];
-            road.Init(prefab);
-        }
-
-        // Init Roads
-        for (int i = 0; i < roadPoolSize; i++)
-        {
-            road = _roads.Next();
-            road.transform.position = new Vector3(i * roadOffset, 0, 0);
-        }
+        roads.Remove(road.gameObject);
+        Destroy(road.gameObject);
     }
 }
