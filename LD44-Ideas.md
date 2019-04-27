@@ -8,3 +8,4 @@
 - Casino games where you bet your life.
 - Strategy turn based game on hostage extraction with terrorists. Move the police units on the place and deals with terrorists.
 - Same concept as carmageddon idea, but instead of killing people you save them from asteroids, aliens or other disasters, and trade their lifes with god himself for powerups/upgrades, ...
+- Trading game where you invest your life into items and the combine them (?) and sell them again. If you invest too much or not enough, you don't run out of time and lose. 
