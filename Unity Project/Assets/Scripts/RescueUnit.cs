@@ -8,6 +8,7 @@ public class RescueUnit : MonoBehaviour
     private RescueStatus _statusBar;
     private BoxCollider _bc;
 
+    public GameObject ExhaustEffect;
     public Transform RescueSpot;
     public float Gas = 1f;
     public float GasDecreaseSpeed = 0.01f;
@@ -43,6 +44,8 @@ public class RescueUnit : MonoBehaviour
         _statusBar.GasBarButton.onClick.AddListener(GasBarClicked);
         _statusBar.AbandonButton.onClick.AddListener(AbandonUnit);
 
+        ExhaustEffect.SetActive(true);
+
         Rescued = true;
     }
 
@@ -63,6 +66,8 @@ public class RescueUnit : MonoBehaviour
         Destroy(_statusBar.gameObject);
         GameManager.Instance.Player.AbandonUnit(this);
 
+        ExhaustEffect.SetActive(false);
+
         var t = 0f;
         var from = transform.position;
         var to = new Vector3(transform.position.x - 15, transform.position.y, transform.position.z);
@@ -73,6 +78,7 @@ public class RescueUnit : MonoBehaviour
             t += Time.deltaTime;
             yield return null;
         }
+        GameManager.Instance.Explosion();
         Destroy(this.gameObject);
     }
 
@@ -84,6 +90,15 @@ public class RescueUnit : MonoBehaviour
         if (Gas == 0)
         {
             AbandonUnit();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "rescueDeathZone")
+        {
+            GameManager.Instance.Explosion();
+            Destroy(this.gameObject);
         }
     }
 }

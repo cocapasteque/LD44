@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject rescuePrefab;
+    [SerializeField] private GameObject explosionPrefab;
 
     [SerializeField] private GameObject GameOverPanel;
     [SerializeField] private GameObject EndRoundPanel;
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> roads;
     [SerializeField] private Transform RoadParent;
     [SerializeField] private GameTimer Timer;
+    [SerializeField] private CameraShake CameraShake;
+    [SerializeField] private Transform ExplosionTransform;
 
     public Player Player;
 
@@ -47,6 +50,18 @@ public class GameManager : MonoBehaviour
                 WinRound();
             }
         }
+    }
+
+    public void Explosion()
+    {
+        ShakeCamera(0.5f);
+        var expl = Instantiate(explosionPrefab, ExplosionTransform);
+        Destroy(expl, 5f);
+    }
+
+    public void ShakeCamera(float duration)
+    {
+        CameraShake.shakeDuration = duration;
     }
 
     // Win the round, the timer went to 0 and the player still had gas in his tank.
