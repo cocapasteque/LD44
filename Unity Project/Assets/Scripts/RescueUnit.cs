@@ -36,7 +36,7 @@ public class RescueUnit : MonoBehaviour
         transform.rotation = rescueSpot.rotation;
         GetComponent<CarMovement>().enabled = true;
 
-        Gas = Random.Range(0.2f, 0.4f);
+        Gas = Random.Range(0.05f, 0.15f);
 
         // UI Stuff
         _statusBar = Instantiate(statusBar, GameManager.Instance.RescueStatusParent).GetComponent<RescueStatus>();

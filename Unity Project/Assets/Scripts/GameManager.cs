@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject rescuePrefab;
 
+    [SerializeField] private GameObject GameOverPanel;
+    [SerializeField] private GameObject EndRoundPanel;
+
     [SerializeField] private List<GameObject> roadPrefabs;
     [SerializeField] private float roadOffset;
     [SerializeField] private List<GameObject> roads;
@@ -52,12 +55,24 @@ public class GameManager : MonoBehaviour
     {
         Started = false;
         Debug.Log("You won the round");
+        EndRoundPanel.SetActive(true);
     }
     // Game over, the timer is not done but the player ran out of gas.
     public void GameOver()
     {
         Started = false;
         Debug.Log("Game Over");
+        GameOverPanel.SetActive(true);
+    }
+    // Open the upgrade menu
+    public void GoToShop()
+    {
+
+    }
+    // Restart the game
+    public void RestartGame()
+    {
+
     }
     // Start the game
     public void StartGame()

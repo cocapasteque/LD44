@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
         RescueSpots.Remove(randomSpot);
         _usedSpots.Add(randomSpot);
         _rescued.Add(unit);
+        GiveGas(unit, 0.1f);
     }
     // Abandon unit
     public void AbandonUnit(RescueUnit unit)
@@ -66,7 +67,7 @@ public class Player : MonoBehaviour
     // Give some gas to a rescued unit
     public void GiveGas(RescueUnit unit, float amount)
     {
-        Gas -= amount;
+        Gas -= amount / 4;
         unit.Gas += amount;
     }
     // Smooth switch of lane.
@@ -92,7 +93,7 @@ public class Player : MonoBehaviour
         if (other.tag == "rescueUnit")
         {
             var unit = other.GetComponent<RescueUnit>();
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (!unit.Rescued && Input.GetKeyDown(KeyCode.Space))
             {
                 RescueUnit(unit);
             }
