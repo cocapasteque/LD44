@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour
     public bool Started = false;
     public Vector3 LimitPosition;
     public Vector3 SpawnPosition;
-    public Vector3 PlayerSpawnPosition;
+    public Transform PlayerSpawn;
+    public List<Transform> RescueSpots;
+    public RectTransform RescueStatusParent;
 
     public float Speed;
     public float TimeLimit;
@@ -60,7 +62,8 @@ public class GameManager : MonoBehaviour
     // Start the game
     public void StartGame()
     {
-        Player = Instantiate(playerPrefab, PlayerSpawnPosition, Quaternion.identity).GetComponent<Player>();
+        Player = Instantiate(playerPrefab, PlayerSpawn).GetComponent<Player>();
+        Player.RescueSpots = RescueSpots;
 
         Timer.Reset();
         Started = true;

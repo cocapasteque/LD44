@@ -80,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneOffset: 4
   currentPosition: 0
+  rescueSpot: {fileID: 0}
   Gas: 1
   GasDecreaseSpeed: 0.2
 --- !u!114 &2772676284596752938

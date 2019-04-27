@@ -6,11 +6,15 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private int laneOffset;
     [SerializeField] private PlayerMovement currentPosition;
+    public List<Transform> RescueSpots;
+    private List<Transform> _usedSpots = new List<Transform>();
+    private List<RescueUnit> _rescued = new List<RescueUnit>();
 
     public float Gas = 1f;
     public float GasDecreaseSpeed = 1f;
 
     private bool _canMove = true;
+    private bool _keyUp = true;
 
     private void Update()
     {
@@ -26,13 +30,18 @@ public class Player : MonoBehaviour
     // Handling the keyboard input for the player.
     private void HandleMovement()
     {
-        if (_canMove && Input.GetKeyDown(KeyCode.LeftArrow) && currentPosition != PlayerMovement.Left)
+        var horizontal = Input.GetAxis("Horizontal");
+        if (horizontal == 0) _keyUp = true;
+
+        if (_canMove && _keyUp && horizontal < 0 && currentPosition != PlayerMovement.Left)
         {
+            _keyUp = false;
             var move = new Vector3(transform.position.x, transform.position.y, transform.position.z + laneOffset);
             StartCoroutine(ChangeLane(move, PlayerMovement.Left));
         }
-        else if (_canMove && Input.GetKeyDown(KeyCode.RightArrow) && currentPosition != PlayerMovement.Right)
+        else if (_canMove && _keyUp && horizontal > 0 && currentPosition != PlayerMovement.Right)
         {
+            _keyUp = false;
             var move = new Vector3(transform.position.x, transform.position.y, transform.position.z - laneOffset);
             StartCoroutine(ChangeLane(move, PlayerMovement.Right));
         }
@@ -40,7 +49,25 @@ public class Player : MonoBehaviour
     // Rescue unit and put it in the rescued pool behind player's car.
     private void RescueUnit(RescueUnit unit)
     {
-
+        var randomSpot = RescueSpots[Random.Range(0, RescueSpots.Count)];
+        unit.Rescue(randomSpot);
+        RescueSpots.Remove(randomSpot);
+        _usedSpots.Add(randomSpot);
+        _rescued.Add(unit);
+    }
+    // Abandon unit
+    public void AbandonUnit(RescueUnit unit)
+    {
+        // Free the spot in the rescuespot list and remove the unit form the rescued list.
+        _rescued.Remove(unit);
+        _usedSpots.Remove(unit.RescueSpot);
+        RescueSpots.Add(unit.RescueSpot);
+    }
+    // Give some gas to a rescued unit
+    public void GiveGas(RescueUnit unit, float amount)
+    {
+        Gas -= amount;
+        unit.Gas += amount;
     }
     // Smooth switch of lane.
     private IEnumerator ChangeLane(Vector3 to, PlayerMovement move)
@@ -59,16 +86,15 @@ public class Player : MonoBehaviour
         transform.position = to;
         _canMove = true;
     }
-
-
     private void OnTriggerStay(Collider other)
     {
         // If we are rescuing an unit
         if (other.tag == "rescueUnit")
         {
+            var unit = other.GetComponent<RescueUnit>();
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                RescueUnit(other.GetComponent<RescueUnit>());
+                RescueUnit(unit);
             }
         }
     }
