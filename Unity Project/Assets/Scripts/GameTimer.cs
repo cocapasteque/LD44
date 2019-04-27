@@ -18,10 +18,11 @@ public class GameTimer : MonoBehaviour
     private void Update()
     {
         if (!GameManager.Instance.Started) return;
-        Timer -= Time.deltaTime;
+        Timer = Mathf.Clamp(Timer - Time.deltaTime, 0, float.MaxValue);
+
         _ts = TimeSpan.FromSeconds(Timer);
 
-        _text.text = $"{_ts.Minutes : 00} : {_ts.Seconds : 00}";
+        _text.text = $"{_ts.Minutes: 00} : {_ts.Seconds: 00}";
     }
 
     public void Reset()

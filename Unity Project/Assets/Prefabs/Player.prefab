@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1178338081836352315}
   - component: {fileID: 1537416175224373624}
+  - component: {fileID: 2772676284596752938}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -75,6 +76,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2761da31fa1134eadfe46fd9858295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laneOffset: 4
+  currentPosition: 0
+  Gas: 1
+  GasDecreaseSpeed: 0.2
+--- !u!114 &2772676284596752938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8717761115794146163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a87c54e5b014154ba2b86815c602be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CarObject: {fileID: 3391635135015429933}
+  RollSpeed: 15
+  PitchSpeed: 12
 --- !u!1001 &3391635135015304613
 PrefabInstance:
   m_ObjectHideFlags: 0

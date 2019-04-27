@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform RoadParent;
     [SerializeField] private GameTimer Timer;
 
-    private Player _player;
+    public Player Player;
 
     public bool Started = false;
     public Vector3 LimitPosition;
@@ -27,10 +27,35 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
     }
+    private void Update()
+    {
+        if (Started)
+        {
+            if (Player.Gas == 0 && Timer.Timer > 0)
+            {
+                GameOver();
+            }
+            else if (Player.Gas > 0 && Timer.Timer == 0)
+            {
+                WinRound();
+            }
+        }
+    }
+
+    public void WinRound()
+    {
+        Started = false;
+        Debug.Log("You won the round");
+    }
+    public void GameOver()
+    {
+        Started = false;
+        Debug.Log("Game Over");
+    }
 
     public void StartGame()
     {
-        _player = Instantiate(playerPrefab, PlayerSpawnPosition, Quaternion.identity).GetComponent<Player>();
+        Player = Instantiate(playerPrefab, PlayerSpawnPosition, Quaternion.identity).GetComponent<Player>();
 
         Timer.Reset();
         Started = true;
