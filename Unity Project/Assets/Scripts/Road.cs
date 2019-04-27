@@ -8,6 +8,8 @@ public class Road : MonoBehaviour
 
     private void Update()
     {
+        if (!GameManager.Instance.Started) return;
+
         Move(GameManager.Instance.Speed);
     }
 
