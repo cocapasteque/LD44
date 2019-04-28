@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class CarMovement : MonoBehaviour
     public float RollSpeed = 5f;
     public float PitchSpeed = 5f;
     public Vector3 baseRotation;
+    public List<GameObject> CarModels;
 
     private void Start()
     {
@@ -18,6 +20,24 @@ public class CarMovement : MonoBehaviour
         var pitch = Mathf.Sin(Time.time * PitchSpeed);
         var y = CarObject.transform.rotation.eulerAngles.y;
         CarObject.rotation = Quaternion.Euler(baseRotation.x + pitch, baseRotation.y, baseRotation.z + roll);
+    }
+
+    public void SetNewModel()
+    {
+        foreach (GameObject car in CarModels)
+        {
+            car.SetActive(false);
+        }
+        if (GameManager.Instance.CurrentLevel + 1 >= CarModels.Count)
+        {
+            CarModels[CarModels.Count - 1].SetActive(true);
+        }
+        else
+        {
+            CarModels[GameManager.Instance.CurrentLevel].SetActive(true);
+        }
+        CarObject = CarModels[GameManager.Instance.CurrentLevel].transform;
+        baseRotation = CarObject.transform.rotation.eulerAngles;
     }
 }
 

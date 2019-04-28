@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
 
     public void Init()
     {
+        GetComponent<CarMovement>().SetNewModel();
         Gas = MaxGas;
         _canMove = true;
         foreach (var rescue in _rescued)
@@ -32,10 +33,11 @@ public class Player : MonoBehaviour
             rescue.DestroyUnit();
         }
         _rescued.Clear();
-        Gas = MaxGas;
+        Gas = MaxGas;       
         transform.position = GameManager.Instance.PlayerSpawn.position;
         currentPosition = PlayerMovement.Middle;
         _moveForward = false;
+        engine.volume = 0.6f;
         engine.Play();
     }
 

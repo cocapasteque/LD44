@@ -8,11 +8,14 @@ public class UpgradeShop : MonoBehaviour
     public List<Stat> Stats;   
     public List<int> UpgradeKarmaKosts;
     public Text AvailableKarma;
+    public Transform CarPedestal;
 
     private Dictionary<int, int> decreasableStats;
+    private GameObject currentCar;
 
     private void OnEnable()
     {
+        SetCar();
         decreasableStats = new Dictionary<int, int>();
         for (int i = 0; i < Stats.Count; i++)
         {
@@ -43,8 +46,7 @@ public class UpgradeShop : MonoBehaviour
             {
                 Stats[i].IncreaseButton.interactable = true;
             }
-        }
-        
+        }  
     }
 
     public void IncreaseStat(int index)
@@ -81,5 +83,19 @@ public class UpgradeShop : MonoBehaviour
     private void UpdateKarma()
     {
         AvailableKarma.text = string.Format("Available Karma: {0}", GameManager.Instance.Karma);
+    }
+
+    private void SetCar()
+    {
+        if (currentCar != null)
+        {
+            Destroy(currentCar);
+        }
+        GameObject Car = GameManager.Instance.Player.GetComponent<CarMovement>().CarObject.gameObject;
+        currentCar = GameObject.Instantiate(Car);
+        currentCar.transform.parent = CarPedestal;
+        currentCar.transform.localPosition = Vector3.zero;
+        currentCar.transform.localRotation = Car.transform.localRotation;
+        currentCar.transform.localScale = Car.transform.localScale;
     }
 }

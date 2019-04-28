@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RescueUnit : MonoBehaviour
@@ -16,12 +17,19 @@ public class RescueUnit : MonoBehaviour
     public float GasDecreaseSpeed => 0.01f - GameManager.Instance.StatValues[4] / 10;
     public bool Rescued = false;
 
+    public List<GameObject> CarModels;
+
     private bool abandoned = false;
     private bool _toDestroy = false;
 
     private void Start()
     {
         _bc = GetComponent<BoxCollider>();
+        GameObject go = GameObject.Instantiate(CarModels[Random.Range(0, CarModels.Count)]);
+        go.transform.parent = this.transform;
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localScale = Vector3.one;
+        go.transform.localRotation = Quaternion.identity;
     }
 
     private void Update()
