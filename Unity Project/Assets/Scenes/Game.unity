@@ -6131,7 +6131,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1595476281}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1695519092}
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1595476281
@@ -6397,7 +6408,6 @@ MonoBehaviour:
   - {fileID: 1841664870}
   - {fileID: 292934911}
   RescueStatusParent: {fileID: 440087270}
-  KarmaPerCar: 3
   Speed: 15
   TimeLimit: 60
   KarmaText: {fileID: 374740969}
@@ -7775,7 +7785,7 @@ MonoBehaviour:
     DecreaseButton: {fileID: 2097769928}
     FillStatus: {fileID: 762639556}
     Cost: {fileID: 425715494}
-  UpgradeKarmaKosts: 0100000002000000030000000400000005000000
+  UpgradeKarmaKosts: 050000000a000000140000002d0000003c000000
   AvailableKarma: {fileID: 1971017559}
 --- !u!1 &1918111326
 GameObject:
