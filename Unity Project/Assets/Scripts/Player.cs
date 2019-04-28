@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private List<RescueUnit> _rescued = new List<RescueUnit>();
 
     public float Gas = 1f;
-    public float MaxGas => 1 + GameManager.Instance.StatValues[0] / 3;
+    public float MaxGas => 1 + GameManager.Instance.StatValues[0] / 5;
     public float GasDecreaseSpeed => 0.01f - (GameManager.Instance.StatValues[1] / 1000);
     public GameObject Model;
 

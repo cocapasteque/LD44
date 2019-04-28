@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject GameCanvas;
     [SerializeField] private GameObject ShopCamera;
     [SerializeField] private GameObject ShopCanvas;
+    [SerializeField] private GasBar FuelBar;
+
 
     public Player Player;
 
@@ -34,33 +36,58 @@ public class GameManager : MonoBehaviour
     public Transform PlayerSpawn;
     public List<Transform> RescueSpots;
     public RectTransform RescueStatusParent;
-    public int KarmaPerCar => 5 + StatValues[2];
-    public int MinusKarmaPerCar => 5 - StatValues[4];
+    public int BaseKarmaPerCar;
+    public int BaseMinusKarmaPerCar;
+    [HideInInspector]
+    public int KarmaPerCar;
+    [HideInInspector]
+    public int MinusKarmaPerCar;
 
+    public float BaseSpawnProbability;
+    public float SpawnProbabilityIncreasePerLevel;
     public float Speed;
+    public float SpeedIncreasePerLevel;
     public float TimeLimit;
-
+    public float TimeIncreasePerLevel;
+    public int BaseKarmaForNextLevel;
+    public int KarmaIncreasePerLevel;
+   
     public Text KarmaText;
     public int Karma;
     public int[] StatValues = new int[5];
 
+    public int CurrentLevel;
+
+    public enum LossCondition
+    {
+        fuel,
+        karma
+    }
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
     }
+
     private void Update()
     {
         if (Started)
         {
             if (Player.Gas == 0 && Timer.Timer > 0)
             {
-                GameOver();
+                GameOver(LossCondition.fuel);
             }
             else if (Player.Gas > 0 && Timer.Timer == 0)
             {
-                WinRound();
+                if (Karma >= BaseKarmaForNextLevel + CurrentLevel * KarmaIncreasePerLevel)
+                {
+                    WinRound();
+                }
+                else
+                {
+                    GameOver(LossCondition.karma);
+                }
             }
         }
     }
@@ -85,8 +112,9 @@ public class GameManager : MonoBehaviour
         EndRoundPanel.SetActive(true);
     }
     // Game over, the timer is not done but the player ran out of gas.
-    public void GameOver()
+    public void GameOver(LossCondition condition)
     {
+        CurrentLevel = 0;
         Started = false;
         Debug.Log("Game Over");
         GameOverPanel.SetActive(true);
@@ -106,6 +134,14 @@ public class GameManager : MonoBehaviour
         GameCanvas.SetActive(true);
         ShopCamera.SetActive(false);
         ShopCanvas.SetActive(false);
+        
+        CurrentLevel++;
+        ChangeKarma(0);
+        FuelBar.UpdateBarLength();
+        Speed += SpeedIncreasePerLevel;
+        TimeLimit += TimeIncreasePerLevel;
+        MinusKarmaPerCar = BaseMinusKarmaPerCar - StatValues[4];
+        KarmaPerCar = BaseKarmaPerCar + StatValues[2];
 
         Player.Init();
         Timer.Reset();
@@ -113,12 +149,17 @@ public class GameManager : MonoBehaviour
     }
     // Start the game
     public void StartGame()
-    {
+    {      
         Player = Instantiate(playerPrefab, PlayerSpawn).GetComponent<Player>();
         Player.RescueSpots = RescueSpots;
         Player.Init();
 
         Timer.Reset();
+        MinusKarmaPerCar = BaseMinusKarmaPerCar - StatValues[4];
+        KarmaPerCar = BaseKarmaPerCar + StatValues[2];
+        Karma = 0;
+        CurrentLevel = 0;
+        ChangeKarma(0);
         Started = true;
     }
     // Spawn a road and calculate if it should contain a rescue unit.
@@ -128,8 +169,7 @@ public class GameManager : MonoBehaviour
         var roadObject = Instantiate(road, SpawnPosition, Quaternion.identity);
         roadObject.transform.SetParent(RoadParent);
 
-        // Spawning a rescue unit 20% chance.
-        if (Random.Range(0f, 100f) < 20f)
+        if (Random.Range(0f, 100f) < BaseSpawnProbability + SpawnProbabilityIncreasePerLevel * CurrentLevel)
         {
             roadObject.GetComponent<Road>().SpawnRescue(rescuePrefab);
         }
@@ -147,6 +187,6 @@ public class GameManager : MonoBehaviour
     public void ChangeKarma(int value)
     {
         Karma += value;
-        KarmaText.text = Karma.ToString();
+        KarmaText.text = Karma.ToString() + " / " + (BaseKarmaForNextLevel + CurrentLevel * KarmaIncreasePerLevel);
     }
 }

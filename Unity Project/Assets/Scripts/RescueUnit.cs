@@ -14,6 +14,7 @@ public class RescueUnit : MonoBehaviour
     public float GasDecreaseSpeed => 0.01f - GameManager.Instance.StatValues[4] / 10;
     public bool Rescued = false;
 
+    private bool abandoned = false;
     private bool _toDestroy = false;
 
     private void Start()
@@ -57,6 +58,7 @@ public class RescueUnit : MonoBehaviour
     // The abandon button has been clicked, sending the unit in the fire of hell.
     private void AbandonUnit()
     {
+        abandoned = true;
         StartCoroutine(AbandonUnitCoroutine());
     }
 
@@ -93,7 +95,7 @@ public class RescueUnit : MonoBehaviour
         Gas = Mathf.Clamp01(Gas - (GasDecreaseSpeed * Time.deltaTime));
         _statusBar.SetGas(Gas);
 
-        if (Gas == 0)
+        if (Gas == 0 && !abandoned)
         {
             AbandonUnit();
         }
