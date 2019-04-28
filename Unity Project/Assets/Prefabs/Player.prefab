@@ -82,8 +82,8 @@ MonoBehaviour:
   laneOffset: 4
   currentPosition: 0
   RescueSpots: []
-  Gas: 2
-  GasDecreaseSpeed: 0.1
+  Gas: 1
+  GasDecreaseSpeed: 1
   Model: {fileID: 3195717867923235483}
 --- !u!114 &2772676284596752938
 MonoBehaviour:

@@ -11,11 +11,19 @@ public class Player : MonoBehaviour
     private List<RescueUnit> _rescued = new List<RescueUnit>();
 
     public float Gas = 1f;
-    public float GasDecreaseSpeed = 1f;
+    public float MaxGas => 1 + GameManager.Instance.StatValues[0] / 3;
+    public float GasDecreaseSpeed => 0.01f - (GameManager.Instance.StatValues[1] / 1000);
     public GameObject Model;
 
     private bool _canMove = true;
     private bool _keyUp = true;
+
+    public void Init()
+    {
+        Gas = MaxGas;
+        _usedSpots = new List<Transform>();
+        _rescued = new List<RescueUnit>();
+    }
 
     private void Update()
     {
@@ -26,7 +34,7 @@ public class Player : MonoBehaviour
     // Handling the gas tank of the player.
     private void HandleGas()
     {
-        Gas = Mathf.Clamp01(Gas - ((GasDecreaseSpeed * Time.deltaTime) / 10));
+        Gas = Mathf.Clamp(Gas - GasDecreaseSpeed * Time.deltaTime, 0, MaxGas);
     }
     // Handling the keyboard input for the player.
     private void HandleMovement()

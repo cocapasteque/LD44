@@ -163,7 +163,7 @@ MonoBehaviour:
   ExhaustEffect: {fileID: 8220236124002097404}
   RescueSpot: {fileID: 0}
   Gas: 0
-  GasDecreaseSpeed: 0.1
+  GasDecreaseSpeed: 1
   Rescued: 0
 --- !u!114 &234578859111241339
 MonoBehaviour:

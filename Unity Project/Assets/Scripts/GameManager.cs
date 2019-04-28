@@ -20,10 +20,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameTimer Timer;
     [SerializeField] private CameraShake CameraShake;
     [SerializeField] private Transform ExplosionTransform;
-    
+
     [SerializeField] private GameObject GameCamera;
     [SerializeField] private GameObject GameCanvas;
-    [SerializeField] private GameObject ShopCamera;   
+    [SerializeField] private GameObject ShopCamera;
     [SerializeField] private GameObject ShopCanvas;
 
     public Player Player;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     public Transform PlayerSpawn;
     public List<Transform> RescueSpots;
     public RectTransform RescueStatusParent;
-    public int KarmaPerCar;
+    public int KarmaPerCar => 3 + StatValues[2];
 
     public float Speed;
     public float TimeLimit;
@@ -101,13 +101,16 @@ public class GameManager : MonoBehaviour
     // Restart the game
     public void RestartGame()
     {
-
+        Player.Init();
+        Timer.Reset();
+        Started = true;
     }
     // Start the game
     public void StartGame()
     {
         Player = Instantiate(playerPrefab, PlayerSpawn).GetComponent<Player>();
         Player.RescueSpots = RescueSpots;
+        Player.Init();
 
         Timer.Reset();
         Started = true;
