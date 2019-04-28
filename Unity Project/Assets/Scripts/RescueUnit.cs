@@ -7,6 +7,8 @@ public class RescueUnit : MonoBehaviour
 
     private RescueStatus _statusBar;
     private BoxCollider _bc;
+    public AudioSource Audio;
+    public AudioClip OutOfGas;
 
     public GameObject ExhaustEffect;
     public Transform RescueSpot;
@@ -31,6 +33,7 @@ public class RescueUnit : MonoBehaviour
 
     public void Rescue(Transform rescueSpot)
     {
+        Audio.Play();
         RescueSpot = rescueSpot;
         _bc.enabled = false;
         transform.SetParent(rescueSpot);
@@ -58,6 +61,9 @@ public class RescueUnit : MonoBehaviour
     // The abandon button has been clicked, sending the unit in the fire of hell.
     private void AbandonUnit()
     {
+        Audio.Stop();
+        Audio.PlayOneShot(OutOfGas);
+
         abandoned = true;
         StartCoroutine(AbandonUnitCoroutine());
     }

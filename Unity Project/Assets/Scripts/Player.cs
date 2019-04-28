@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private int laneOffset;
     [SerializeField] private PlayerMovement currentPosition;
+    [SerializeField] private AudioSource engine;
+
     public List<Transform> RescueSpots;
     private List<Transform> _usedSpots = new List<Transform>();
     private List<RescueUnit> _rescued = new List<RescueUnit>();
@@ -34,6 +36,12 @@ public class Player : MonoBehaviour
         transform.position = GameManager.Instance.PlayerSpawn.position;
         currentPosition = PlayerMovement.Middle;
         _moveForward = false;
+        engine.Play();
+    }
+
+    public void StopEngine()
+    {
+        engine.Stop();
     }
 
     private void Update()

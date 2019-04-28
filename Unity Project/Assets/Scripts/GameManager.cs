@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     public float TimeLimit;
     public int BaseKarmaForNextLevel;
     public int KarmaIncreasePerLevel;
-   
+
     public Text KarmaText;
     public int Karma;
     public int[] StatValues = new int[5];
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             if (Player.Gas == 0 && Timer.Timer > 0)
             {
-                GameOver(LossCondition.fuel);              
+                GameOver(LossCondition.fuel);
             }
             else if (Player.Gas > 0 && Timer.Timer == 0)
             {
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Over");
         GameOverPanel.SetActive(true);
 
-        switch(condition)
+        switch (condition)
         {
             case LossCondition.fuel:
                 GameOverFuelText.SetActive(true);
@@ -139,6 +139,9 @@ public class GameManager : MonoBehaviour
     // Open the upgrade menu
     public void GoToShop()
     {
+        Player.Init();
+        Player.StopEngine();
+
         GameCamera.SetActive(false);
         GameCanvas.SetActive(false);
         ShopCamera.SetActive(true);
@@ -173,7 +176,7 @@ public class GameManager : MonoBehaviour
         LevelText.text = (CurrentLevel + 1).ToString();
         Karma = 0;
         ChangeKarma(0);
-        ResetStatValues();       
+        ResetStatValues();
         FuelBar.UpdateBarLength();
         Speed = BaseSpeed;
         TimeLimit = BaseTimeLimit;
@@ -186,7 +189,7 @@ public class GameManager : MonoBehaviour
     }
     // Start the game
     public void StartGame()
-    {      
+    {
         Player = Instantiate(playerPrefab, PlayerSpawn).GetComponent<Player>();
         Player.RescueSpots = RescueSpots;
         Player.Init();

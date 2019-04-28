@@ -28,6 +28,12 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
+        StartCoroutine(LoadScene());
+    }
+
+    public IEnumerator LoadScene()
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene("Game");
     }
 
