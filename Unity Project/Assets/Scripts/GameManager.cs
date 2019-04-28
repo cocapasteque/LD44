@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameTimer Timer;
     [SerializeField] private CameraShake CameraShake;
     [SerializeField] private Transform ExplosionTransform;
+    
+    [SerializeField] private GameObject GameCamera;
+    [SerializeField] private GameObject GameCanvas;
+    [SerializeField] private GameObject ShopCamera;   
+    [SerializeField] private GameObject ShopCanvas;
 
     public Player Player;
 
@@ -28,9 +34,15 @@ public class GameManager : MonoBehaviour
     public Transform PlayerSpawn;
     public List<Transform> RescueSpots;
     public RectTransform RescueStatusParent;
+    public int KarmaPerCar;
 
     public float Speed;
     public float TimeLimit;
+
+    public Text KarmaText;
+    public int Karma;
+    public int[] StatValues = new int[5];
+
 
     private void Awake()
     {
@@ -81,7 +93,10 @@ public class GameManager : MonoBehaviour
     // Open the upgrade menu
     public void GoToShop()
     {
-
+        GameCamera.SetActive(false);
+        GameCanvas.SetActive(false);
+        ShopCamera.SetActive(true);
+        ShopCanvas.SetActive(true);
     }
     // Restart the game
     public void RestartGame()
@@ -117,5 +132,12 @@ public class GameManager : MonoBehaviour
     {
         roads.Remove(road.gameObject);
         Destroy(road.gameObject);
+    }
+
+    //Increase/Decrease Karma during game
+    public void ChangeKarma(int value)
+    {
+        Karma += value;
+        KarmaText.text = Karma.ToString();
     }
 }

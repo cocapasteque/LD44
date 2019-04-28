@@ -97,6 +97,7 @@ public class RescueUnit : MonoBehaviour
     {
         if (other.tag == "rescueDeathZone")
         {
+            GameManager.Instance.ChangeKarma(-1);
             GameManager.Instance.Explosion();
             Destroy(this.gameObject);
         }

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
 
     public float Gas = 1f;
     public float GasDecreaseSpeed = 1f;
+    public GameObject Model;
 
     private bool _canMove = true;
     private bool _keyUp = true;
@@ -55,16 +56,18 @@ public class Player : MonoBehaviour
         _usedSpots.Add(randomSpot);
         _rescued.Add(unit);
         GiveGas(unit, 0.1f);
+        GameManager.Instance.ChangeKarma(GameManager.Instance.KarmaPerCar);
     }
     // Abandon unit
     public void AbandonUnit(RescueUnit unit)
     {
-        // Free the spot in the rescuespot list and remove the unit form the rescued list.
+        // Free the spot in the rescue spot list and remove the unit form the rescued list.
         _rescued.Remove(unit);
         _usedSpots.Remove(unit.RescueSpot);
         RescueSpots.Add(unit.RescueSpot);
         // Get the gas back from the car.
         Gas += unit.Gas / 4;
+        GameManager.Instance.ChangeKarma(-GameManager.Instance.KarmaPerCar);
     }
     // Give some gas to a rescued unit
     public void GiveGas(RescueUnit unit, float amount)
