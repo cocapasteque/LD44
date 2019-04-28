@@ -58,6 +58,9 @@ public class GameManager : MonoBehaviour
     public int[] StatValues = new int[5];
 
     public int CurrentLevel;
+    public Text LevelText;
+
+    private float _spawnChanceFailSave;
 
     public enum LossCondition
     {
@@ -77,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             if (Player.Gas == 0 && Timer.Timer > 0)
             {
-                GameOver(LossCondition.fuel);
+                GameOver(LossCondition.fuel);              
             }
             else if (Player.Gas > 0 && Timer.Timer == 0)
             {
@@ -109,12 +112,14 @@ public class GameManager : MonoBehaviour
     public void WinRound()
     {
         Started = false;
+        Player.EndOfLevel(true);
         Debug.Log("You won the round");
         EndRoundPanel.SetActive(true);
     }
     // Game over, the timer is not done but the player ran out of gas.
     public void GameOver(LossCondition condition)
-    {       
+    {
+        Player.EndOfLevel(false);
         Started = false;
         Debug.Log("Game Over");
         GameOverPanel.SetActive(true);
@@ -148,11 +153,13 @@ public class GameManager : MonoBehaviour
         ShopCamera.SetActive(false);
         ShopCanvas.SetActive(false);
         CurrentLevel++;
+        LevelText.text = (CurrentLevel + 1).ToString();
         ChangeKarma(0);
         FuelBar.UpdateBarLength();
         Speed += SpeedIncreasePerLevel;
         TimeLimit += TimeIncreasePerLevel;
         KarmaPerCar = BaseKarmaPerCar + StatValues[2];
+        _spawnChanceFailSave = 0f;
 
         Player.Init();
         Timer.Reset();
@@ -163,6 +170,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         CurrentLevel = 0;
+        LevelText.text = (CurrentLevel + 1).ToString();
         Karma = 0;
         ChangeKarma(0);
         ResetStatValues();       
@@ -170,6 +178,7 @@ public class GameManager : MonoBehaviour
         Speed = BaseSpeed;
         TimeLimit = BaseTimeLimit;
         KarmaPerCar = BaseKarmaPerCar + StatValues[2];
+        _spawnChanceFailSave = 0f;
 
         Player.Init();
         Timer.Reset();
@@ -204,9 +213,16 @@ public class GameManager : MonoBehaviour
         var roadObject = Instantiate(road, SpawnPosition, Quaternion.identity);
         roadObject.transform.SetParent(RoadParent);
 
-        if (Random.Range(0f, 100f) < BaseSpawnProbability + SpawnProbabilityIncreasePerLevel * CurrentLevel)
+        //Don't spawn new cars in the last 5 seconds
+        if (Timer.Timer > 5 && Random.Range(0f, 100f) < BaseSpawnProbability + SpawnProbabilityIncreasePerLevel * CurrentLevel + _spawnChanceFailSave)
         {
+            _spawnChanceFailSave = 0f;
             roadObject.GetComponent<Road>().SpawnRescue(rescuePrefab);
+        }
+        else
+        {
+            _spawnChanceFailSave *= 2f;
+            _spawnChanceFailSave += 1f;
         }
 
         roads.Add(roadObject);

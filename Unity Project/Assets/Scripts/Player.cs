@@ -17,10 +17,12 @@ public class Player : MonoBehaviour
 
     private bool _canMove = true;
     private bool _keyUp = true;
+    private bool _moveForward = false;
 
     public void Init()
     {
         Gas = MaxGas;
+        _canMove = true;
         foreach (var rescue in _rescued)
         {
             _usedSpots.Remove(rescue.RescueSpot);
@@ -29,12 +31,36 @@ public class Player : MonoBehaviour
         }
         _rescued.Clear();
         Gas = MaxGas;
+        transform.position = GameManager.Instance.PlayerSpawn.position;
+        currentPosition = PlayerMovement.Middle;
+        _moveForward = false;
     }
 
     private void Update()
     {
         HandleMovement();
         HandleGas();
+        if (_moveForward)
+        {
+            transform.Translate(Vector3.right * GameManager.Instance.Speed * Time.deltaTime, Space.World);
+            foreach (var rescue in _rescued)
+            {
+                rescue.gameObject.transform.Translate(Vector3.right * GameManager.Instance.Speed * Time.deltaTime, Space.World);
+            }
+            if (transform.position.x > 100f)
+            {
+                _moveForward = false;
+            }
+        }
+    }
+
+    public void EndOfLevel(bool won)
+    {
+        _canMove = false;
+        if (won)
+        {
+            _moveForward = true;
+        }
     }
 
     // Handling the gas tank of the player.

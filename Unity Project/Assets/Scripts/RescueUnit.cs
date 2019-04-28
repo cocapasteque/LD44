@@ -111,4 +111,8 @@ public class RescueUnit : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }
