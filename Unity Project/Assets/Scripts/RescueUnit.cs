@@ -11,7 +11,7 @@ public class RescueUnit : MonoBehaviour
     public GameObject ExhaustEffect;
     public Transform RescueSpot;
     public float Gas = 1f;
-    public float GasDecreaseSpeed => 0.01f - GameManager.Instance.StatValues[4] / 1000;
+    public float GasDecreaseSpeed => 0.01f - GameManager.Instance.StatValues[4] / 10;
     public bool Rescued = false;
 
     private bool _toDestroy = false;
@@ -82,9 +82,15 @@ public class RescueUnit : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    public void DestroyUnit()
+    {
+        Destroy(_statusBar.gameObject);
+        Destroy(this.gameObject);
+    }
+
     private void HandleGas()
     {
-        Gas = Mathf.Clamp01(Gas - (GasDecreaseSpeed * Time.deltaTime / 10));
+        Gas = Mathf.Clamp01(Gas - (GasDecreaseSpeed * Time.deltaTime));
         _statusBar.SetGas(Gas);
 
         if (Gas == 0)

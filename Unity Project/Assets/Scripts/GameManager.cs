@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
     public Transform PlayerSpawn;
     public List<Transform> RescueSpots;
     public RectTransform RescueStatusParent;
-    public int KarmaPerCar => 3 + StatValues[2];
+    public int KarmaPerCar => 5 + StatValues[2];
+    public int MinusKarmaPerCar => 5 - StatValues[4];
 
     public float Speed;
     public float TimeLimit;
@@ -101,6 +102,11 @@ public class GameManager : MonoBehaviour
     // Restart the game
     public void RestartGame()
     {
+        GameCamera.SetActive(true);
+        GameCanvas.SetActive(true);
+        ShopCamera.SetActive(false);
+        ShopCanvas.SetActive(false);
+
         Player.Init();
         Timer.Reset();
         Started = true;

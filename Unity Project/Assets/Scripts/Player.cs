@@ -21,8 +21,14 @@ public class Player : MonoBehaviour
     public void Init()
     {
         Gas = MaxGas;
-        _usedSpots = new List<Transform>();
-        _rescued = new List<RescueUnit>();
+        foreach (var rescue in _rescued)
+        {
+            _usedSpots.Remove(rescue.RescueSpot);
+            RescueSpots.Add(rescue.RescueSpot);
+            rescue.DestroyUnit();
+        }
+        _rescued.Clear();
+        Gas = MaxGas;
     }
 
     private void Update()
@@ -75,7 +81,7 @@ public class Player : MonoBehaviour
         RescueSpots.Add(unit.RescueSpot);
         // Get the gas back from the car.
         Gas += unit.Gas / 4;
-        GameManager.Instance.ChangeKarma(-GameManager.Instance.KarmaPerCar);
+        GameManager.Instance.ChangeKarma(-GameManager.Instance.MinusKarmaPerCar);
     }
     // Give some gas to a rescued unit
     public void GiveGas(RescueUnit unit, float amount)
