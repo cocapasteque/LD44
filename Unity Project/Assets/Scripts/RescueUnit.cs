@@ -50,7 +50,7 @@ public class RescueUnit : MonoBehaviour
         Rescued = true;
     }
 
-    // The gas bar has been clicked, give gas to recue unit
+    // The gas bar has been clicked, give gas to rescue unit
     private void GasBarClicked()
     {
         GameManager.Instance.Player.GiveGas(this, 0.1f);
@@ -80,6 +80,7 @@ public class RescueUnit : MonoBehaviour
             t += Time.deltaTime;
             yield return null;
         }
+        GameManager.Instance.ChangeKarma(-6 + GameManager.Instance.StatValues[3]);
         GameManager.Instance.Explosion();
         Destroy(this.gameObject);
     }
@@ -105,7 +106,7 @@ public class RescueUnit : MonoBehaviour
     {
         if (other.tag == "rescueDeathZone")
         {
-            GameManager.Instance.ChangeKarma(-1);
+            GameManager.Instance.ChangeKarma(-6 + GameManager.Instance.StatValues[3]);
             GameManager.Instance.Explosion();
             Destroy(this.gameObject);
         }

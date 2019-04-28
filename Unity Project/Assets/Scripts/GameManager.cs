@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject explosionPrefab;
 
     [SerializeField] private GameObject GameOverPanel;
+    [SerializeField] private GameObject GameOverFuelText;
+    [SerializeField] private GameObject GameOverKarmaText;
     [SerializeField] private GameObject EndRoundPanel;
 
     [SerializeField] private List<GameObject> roadPrefabs;
@@ -37,11 +39,8 @@ public class GameManager : MonoBehaviour
     public List<Transform> RescueSpots;
     public RectTransform RescueStatusParent;
     public int BaseKarmaPerCar;
-    public int BaseMinusKarmaPerCar;
     [HideInInspector]
     public int KarmaPerCar;
-    [HideInInspector]
-    public int MinusKarmaPerCar;
 
     public float BaseSpawnProbability;
     public float SpawnProbabilityIncreasePerLevel;
@@ -118,6 +117,18 @@ public class GameManager : MonoBehaviour
         Started = false;
         Debug.Log("Game Over");
         GameOverPanel.SetActive(true);
+
+        switch(condition)
+        {
+            case LossCondition.fuel:
+                GameOverFuelText.SetActive(true);
+                GameOverKarmaText.SetActive(false);
+                break;
+            case LossCondition.karma:
+                GameOverFuelText.SetActive(false);
+                GameOverKarmaText.SetActive(true);
+                break;
+        }
     }
     // Open the upgrade menu
     public void GoToShop()
@@ -127,6 +138,7 @@ public class GameManager : MonoBehaviour
         ShopCamera.SetActive(true);
         ShopCanvas.SetActive(true);
     }
+
     // Restart the game
     public void RestartGame()
     {
@@ -140,7 +152,6 @@ public class GameManager : MonoBehaviour
         FuelBar.UpdateBarLength();
         Speed += SpeedIncreasePerLevel;
         TimeLimit += TimeIncreasePerLevel;
-        MinusKarmaPerCar = BaseMinusKarmaPerCar - StatValues[4];
         KarmaPerCar = BaseKarmaPerCar + StatValues[2];
 
         Player.Init();
@@ -155,7 +166,6 @@ public class GameManager : MonoBehaviour
         Player.Init();
 
         Timer.Reset();
-        MinusKarmaPerCar = BaseMinusKarmaPerCar - StatValues[4];
         KarmaPerCar = BaseKarmaPerCar + StatValues[2];
         Karma = 0;
         CurrentLevel = 0;
