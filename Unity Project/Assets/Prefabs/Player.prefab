@@ -83,7 +83,6 @@ MonoBehaviour:
   currentPosition: 0
   RescueSpots: []
   Gas: 1
-  GasDecreaseSpeed: 1
   Model: {fileID: 3195717867923235483}
 --- !u!114 &2772676284596752938
 MonoBehaviour:
@@ -111,8 +110,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.394691, y: 2.5961847, z: 2.5547254}
-  m_Center: {x: -0.02072978, y: 1.2541461, z: -0.01036489}
+  m_Size: {x: 9.662773, y: 2.5961847, z: 2.5547254}
+  m_Center: {x: 2.1133134, y: 1.2541461, z: -0.01036489}
 --- !u!54 &7238358093448648302
 Rigidbody:
   m_ObjectHideFlags: 0

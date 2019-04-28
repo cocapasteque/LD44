@@ -833,8 +833,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.85300004}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 265.6, y: 0}
+  m_AnchoredPosition: {x: -0.000026226, y: 0.18005371}
+  m_SizeDelta: {x: 272.5, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &193468469
 MonoBehaviour:
@@ -858,11 +858,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 0252746eea5e3ef43b11b2a46462cadd, type: 3}
-    m_FontSize: 83
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 83
+    m_MinSize: 7
+    m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1115,6 +1115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc003d429b1ab5b4cbdfeff6402e9d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BarContainer: {fileID: 1829694812}
 --- !u!1 &281990884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,8 +1473,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -134, y: -79.4}
-  m_SizeDelta: {x: 211.8, y: 158.8}
+  m_AnchoredPosition: {x: -194.92969, y: -79.33005}
+  m_SizeDelta: {x: 360.05, y: 158.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &374740969
 MonoBehaviour:
@@ -1497,7 +1498,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 0252746eea5e3ef43b11b2a46462cadd, type: 3}
-    m_FontSize: 80
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -1508,7 +1509,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 0/10
 --- !u!222 &374740970
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5975,8 +5976,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -415.30078, y: -79.26004}
-  m_SizeDelta: {x: 350.8, y: 158.8}
+  m_AnchoredPosition: {x: -545.6992, y: -79.21994}
+  m_SizeDelta: {x: 341.5, y: 158.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1580317813
 MonoBehaviour:
@@ -6000,7 +6001,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 0252746eea5e3ef43b11b2a46462cadd, type: 3}
-    m_FontSize: 80
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -6131,7 +6132,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1595476281}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1695519092}
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1595476281
@@ -6364,6 +6376,7 @@ MonoBehaviour:
   GameCanvas: {fileID: 553408062}
   ShopCamera: {fileID: 1849226335}
   ShopCanvas: {fileID: 1916788267}
+  FuelBar: {fileID: 278414002}
   Player: {fileID: 0}
   Started: 0
   LimitPosition: {x: -40, y: 0, z: 0}
@@ -6397,12 +6410,22 @@ MonoBehaviour:
   - {fileID: 1841664870}
   - {fileID: 292934911}
   RescueStatusParent: {fileID: 440087270}
-  KarmaPerCar: 3
+  BaseKarmaPerCar: 5
+  BaseMinusKarmaPerCar: 5
+  KarmaPerCar: 0
+  MinusKarmaPerCar: 0
+  BaseSpawnProbability: 25
+  SpawnProbabilityIncreasePerLevel: 5
   Speed: 15
-  TimeLimit: 60
+  SpeedIncreasePerLevel: 5
+  TimeLimit: 30
+  TimeIncreasePerLevel: 10
+  BaseKarmaForNextLevel: 10
+  KarmaIncreasePerLevel: 15
   KarmaText: {fileID: 374740969}
   Karma: 0
   StatValues: 0000000000000000000000000000000000000000
+  CurrentLevel: 0
 --- !u!4 &1695519093
 Transform:
   m_ObjectHideFlags: 0
@@ -7097,10 +7120,10 @@ RectTransform:
   m_Father: {fileID: 553408066}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.85300004}
-  m_AnchorMax: {x: 0.3984375, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 35, y: -29.38}
-  m_SizeDelta: {x: -35, y: -59}
+  m_SizeDelta: {x: 350, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1829694813
 MonoBehaviour:
@@ -7775,7 +7798,7 @@ MonoBehaviour:
     DecreaseButton: {fileID: 2097769928}
     FillStatus: {fileID: 762639556}
     Cost: {fileID: 425715494}
-  UpgradeKarmaKosts: 0100000002000000030000000400000005000000
+  UpgradeKarmaKosts: 050000000a000000140000002800000050000000
   AvailableKarma: {fileID: 1971017559}
 --- !u!1 &1918111326
 GameObject:
