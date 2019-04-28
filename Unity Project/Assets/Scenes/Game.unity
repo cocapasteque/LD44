@@ -6499,10 +6499,12 @@ MonoBehaviour:
   KarmaPerCar: 0
   BaseSpawnProbability: 25
   SpawnProbabilityIncreasePerLevel: 5
-  Speed: 15
+  BaseSpeed: 15
   SpeedIncreasePerLevel: 5
-  TimeLimit: 30
+  Speed: 15
+  BaseTimeLimit: 30
   TimeIncreasePerLevel: 10
+  TimeLimit: 30
   BaseKarmaForNextLevel: 15
   KarmaIncreasePerLevel: 20
   KarmaText: {fileID: 374740969}

@@ -44,10 +44,12 @@ public class GameManager : MonoBehaviour
 
     public float BaseSpawnProbability;
     public float SpawnProbabilityIncreasePerLevel;
-    public float Speed;
+    public float BaseSpeed;
     public float SpeedIncreasePerLevel;
-    public float TimeLimit;
+    public float Speed;
+    public float BaseTimeLimit;
     public float TimeIncreasePerLevel;
+    public float TimeLimit;
     public int BaseKarmaForNextLevel;
     public int KarmaIncreasePerLevel;
    
@@ -112,8 +114,7 @@ public class GameManager : MonoBehaviour
     }
     // Game over, the timer is not done but the player ran out of gas.
     public void GameOver(LossCondition condition)
-    {
-        CurrentLevel = 0;
+    {       
         Started = false;
         Debug.Log("Game Over");
         GameOverPanel.SetActive(true);
@@ -139,19 +140,35 @@ public class GameManager : MonoBehaviour
         ShopCanvas.SetActive(true);
     }
 
-    // Restart the game
-    public void RestartGame()
+
+    public void NextLevel()
     {
         GameCamera.SetActive(true);
         GameCanvas.SetActive(true);
         ShopCamera.SetActive(false);
         ShopCanvas.SetActive(false);
-        
         CurrentLevel++;
         ChangeKarma(0);
         FuelBar.UpdateBarLength();
         Speed += SpeedIncreasePerLevel;
         TimeLimit += TimeIncreasePerLevel;
+        KarmaPerCar = BaseKarmaPerCar + StatValues[2];
+
+        Player.Init();
+        Timer.Reset();
+        Started = true;
+    }
+
+    // Restart the game
+    public void RestartGame()
+    {
+        CurrentLevel = 0;
+        Karma = 0;
+        ChangeKarma(0);
+        ResetStatValues();       
+        FuelBar.UpdateBarLength();
+        Speed = BaseSpeed;
+        TimeLimit = BaseTimeLimit;
         KarmaPerCar = BaseKarmaPerCar + StatValues[2];
 
         Player.Init();
@@ -172,6 +189,14 @@ public class GameManager : MonoBehaviour
         ChangeKarma(0);
         Started = true;
     }
+    public void ResetStatValues()
+    {
+        for (int i = 0; i < StatValues.Length; i++)
+        {
+            StatValues[i] = 0;
+        }
+    }
+
     // Spawn a road and calculate if it should contain a rescue unit.
     public void SpawnRoad()
     {
