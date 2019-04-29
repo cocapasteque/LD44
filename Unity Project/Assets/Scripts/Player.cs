@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
             rescue.DestroyUnit();
         }
         _rescued.Clear();
-        Gas = MaxGas;       
+        Gas = MaxGas;
         transform.position = GameManager.Instance.PlayerSpawn.position;
         currentPosition = PlayerMovement.Middle;
         _moveForward = false;
@@ -150,8 +150,27 @@ public class Player : MonoBehaviour
             var unit = other.GetComponent<RescueUnit>();
             if (!unit.Rescued && Input.GetKeyDown(KeyCode.Space))
             {
+                unit.Outline(false);
                 RescueUnit(unit);
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "rescueUnit")
+        {
+            var unit = other.GetComponent<RescueUnit>();
+            unit.Outline(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "rescueUnit")
+        {
+            var unit = other.GetComponent<RescueUnit>();
+            unit.Outline(false);
         }
     }
 }

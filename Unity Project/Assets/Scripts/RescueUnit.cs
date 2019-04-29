@@ -22,6 +22,8 @@ public class RescueUnit : MonoBehaviour
     private bool abandoned = false;
     private bool _toDestroy = false;
 
+    private MeshRenderer _mr;
+
     private void Start()
     {
         _bc = GetComponent<BoxCollider>();
@@ -30,6 +32,8 @@ public class RescueUnit : MonoBehaviour
         go.transform.localPosition = Vector3.zero;
         go.transform.localScale = Vector3.one;
         go.transform.localRotation = Quaternion.identity;
+
+        _mr = go.GetComponent<MeshRenderer>();
     }
 
     private void Update()
@@ -97,6 +101,20 @@ public class RescueUnit : MonoBehaviour
         GameManager.Instance.ChangeKarma(-6 + GameManager.Instance.StatValues[3]);
         GameManager.Instance.Explosion();
         Destroy(this.gameObject);
+    }
+
+    public void Outline(bool on)
+    {
+        Material mat = _mr.material;
+
+        if (on)
+        {
+            mat.SetFloat("_OutlineWidth", 0.1f);
+        }
+        else
+        {
+            mat.SetFloat("_OutlineWidth", 0f);
+        }
     }
 
     public void DestroyUnit()
