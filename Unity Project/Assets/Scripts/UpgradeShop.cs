@@ -32,9 +32,11 @@ public class UpgradeShop : MonoBehaviour
         {
             Stats[index].IncreaseButton.interactable = false;
             Stats[index].Cost.text = "Fully upgraded";
-            return;
         }
-        Stats[index].Cost.text = string.Format("Cost: {0} Karma", UpgradeKarmaKosts[GameManager.Instance.StatValues[index]]);
+        else
+        {
+            Stats[index].Cost.text = string.Format("Cost: {0} Karma", UpgradeKarmaKosts[GameManager.Instance.StatValues[index]]);
+        }
 
         for (int i = 0; i < Stats.Count; i++)
         {

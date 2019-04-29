@@ -36,7 +36,15 @@ public class CarMovement : MonoBehaviour
         {
             CarModels[GameManager.Instance.CurrentLevel].SetActive(true);
         }
-        CarObject = CarModels[GameManager.Instance.CurrentLevel].transform;
+        if (GameManager.Instance.CurrentLevel < CarModels.Count)
+        {
+            CarObject = CarModels[GameManager.Instance.CurrentLevel].transform;
+        }
+        else
+        {
+            CarObject = CarModels[CarModels.Count - 1].transform;
+        }
+        
         baseRotation = CarObject.transform.rotation.eulerAngles;
     }
 }
