@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -242,5 +243,10 @@ public class GameManager : MonoBehaviour
     {
         Karma += value;
         KarmaText.text = Karma.ToString() + " / " + (BaseKarmaForNextLevel + CurrentLevel * KarmaIncreasePerLevel);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }

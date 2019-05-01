@@ -5,6 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int laneOffset;
+    [SerializeField] private Vector3 rightLane;
+    [SerializeField] private Vector3 midLane;
+    [SerializeField] private Vector3 leftLane;
     [SerializeField] private PlayerMovement currentPosition;
     [SerializeField] private AudioSource engine;
 
@@ -25,7 +28,6 @@ public class Player : MonoBehaviour
     {
         GetComponent<CarMovement>().SetNewModel();
         Gas = MaxGas;
-        _canMove = true;
         foreach (var rescue in _rescued)
         {
             _usedSpots.Remove(rescue.RescueSpot);
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
         Gas = MaxGas;
         transform.position = GameManager.Instance.PlayerSpawn.position;
         currentPosition = PlayerMovement.Middle;
+        _canMove = true;
         _moveForward = false;
         engine.volume = 0.6f;
         engine.Play();
@@ -81,20 +84,25 @@ public class Player : MonoBehaviour
     // Handling the keyboard input for the player.
     private void HandleMovement()
     {
-        var horizontal = Input.GetAxis("Horizontal");
-        if (horizontal == 0) _keyUp = true;
+        if (!_canMove) return;
 
-        if (_canMove && _keyUp && horizontal < 0 && currentPosition != PlayerMovement.Left)
+        if (Input.GetKeyDown(KeyCode.A) && currentPosition != PlayerMovement.Left)
         {
-            _keyUp = false;
-            var move = new Vector3(transform.position.x, transform.position.y, transform.position.z + laneOffset);
-            StartCoroutine(ChangeLane(move, PlayerMovement.Left));
+            StopCoroutine("ChangeLane");
+            switch (currentPosition)
+            {
+                case PlayerMovement.Middle: StartCoroutine(ChangeLane(leftLane, PlayerMovement.Left)); break;
+                case PlayerMovement.Right: StartCoroutine(ChangeLane(midLane, PlayerMovement.Middle)); break;
+            }
         }
-        else if (_canMove && _keyUp && horizontal > 0 && currentPosition != PlayerMovement.Right)
-        {
-            _keyUp = false;
-            var move = new Vector3(transform.position.x, transform.position.y, transform.position.z - laneOffset);
-            StartCoroutine(ChangeLane(move, PlayerMovement.Right));
+        else if (Input.GetKeyDown(KeyCode.D) && currentPosition != PlayerMovement.Right)
+        {        
+            StopCoroutine("ChangeLane");
+            switch (currentPosition)
+            {
+                case PlayerMovement.Middle: StartCoroutine(ChangeLane(rightLane, PlayerMovement.Right)); break;
+                case PlayerMovement.Left: StartCoroutine(ChangeLane(midLane, PlayerMovement.Middle)); break;
+            }
         }
     }
     // Rescue unit and put it in the rescued pool behind player's car.
@@ -128,8 +136,7 @@ public class Player : MonoBehaviour
     // Smooth switch of lane.
     private IEnumerator ChangeLane(Vector3 to, PlayerMovement move)
     {
-        _canMove = false;
-        currentPosition = (PlayerMovement)((int)currentPosition + (int)move);
+        currentPosition = move;
         var t = 0f;
         var from = transform.position;
 
@@ -140,7 +147,6 @@ public class Player : MonoBehaviour
             yield return null;
         }
         transform.position = to;
-        _canMove = true;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -148,7 +154,7 @@ public class Player : MonoBehaviour
         if (other.tag == "rescueUnit")
         {
             var unit = other.GetComponent<RescueUnit>();
-            if (!unit.Rescued && Input.GetKeyDown(KeyCode.Space))
+            if (!unit.Rescued && Input.GetKey(KeyCode.Space))
             {
                 unit.Outline(false);
                 RescueUnit(unit);

@@ -605,6 +605,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laneOffset: 4
+  rightLane: {x: -20, y: 0, z: -4}
+  midLane: {x: -20, y: 0, z: 0}
+  leftLane: {x: -20, y: 0, z: 4}
   currentPosition: 0
   engine: {fileID: 4899502775222960043}
   RescueSpots: []
